@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package processstoch;
+package Queeing;
 
 import static java.time.Clock.system;
 
@@ -13,10 +13,30 @@ import static java.time.Clock.system;
  */
 public class FileAttenteMM1 extends FileAttente {
 
+
+        /**
+     * 
+     */
+    public FileAttenteMM1() {
+        super();
+    }
+    
+    /**
+     * 
+     * @param dLambda
+     * @param dMu
+     * @param iNbClient
+     * @param iNbServer 
+     */
+    public FileAttenteMM1(double dLambda , double dMu, int iNbClient, int iNbServer){
+        super(dLambda, dMu, iNbClient, iNbServer);
+    }
+    
     @Override
     public void init() {
-
+        calculdRho();
         if (conditions()) {
+            //attention à l'ordre des calcules il est important
             calculNombreMoyenClientDansLeSys();
             calculNombreMoyenClientDansLaFile();
             calculDureeMoyenneAttenteDansLeSys();
@@ -56,7 +76,7 @@ public class FileAttenteMM1 extends FileAttente {
     }
 
     @Override
-    public double calculProbabiliteJ(double dJ) {
+    public double calculProbabiliteJ(int dJ) {
         return Math.pow(dRho, dJ) * (1 - dRho);
     }
 
