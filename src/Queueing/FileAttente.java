@@ -299,7 +299,23 @@ public abstract class FileAttente {
 
     @Override
     public String toString() {
-        return "Lambda : "+dLambda+"\t Mu : "+dMu+"\n Rho : "+dRho+"\n L : "+dL+"\t Lq : "+dLq+"\n W : "+dW+"\t Wq : "+dWq;
+        return   " NbClient : "+iNbClient
+                +"\t"
+                +"  NbServeur : "+iNbServer
+                +"\n"
+                +"  Lambda : "+dLambda
+                +"\t"
+                +"  Mu : "+dMu
+                +"\n"
+                +"  Rho : "+dRho
+                +"\n"
+                +"  L : "+dL
+                +"\t\t"
+                +"  Lq : "+dLq
+                +"\n"
+                +"  W : "+dW
+                +"\t\t"
+                +"  Wq : "+dWq;
     }
 
     

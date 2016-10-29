@@ -63,7 +63,7 @@ public class FileAttenteMMS extends FileAttente{
         //si dJ == 0
         if(dJ == 0){
             double sum = 0;
-            for(int j = 0 ; j < iNbServer -1 ; j++){
+            for(int j = 0 ; j < iNbServer ; j++){
                 sum += Math.pow((dRho*(double)iNbServer),j)/(double)Factorielle.Factoriel(j);
             }
             sum += Math.pow((dRho*iNbServer),iNbServer)/((double)Factorielle.Factoriel(iNbServer)*(1-dRho));
@@ -82,7 +82,7 @@ public class FileAttenteMMS extends FileAttente{
 
     @Override
     public void calculNombreMoyenClientDansLaFile() {
-        setdLq((calculProbabiliteJ(0)*(Math.pow(iNbServer, iNbServer)*Math.pow(dRho, iNbServer+1)))/(Factorielle.Factoriel(iNbServer)));
+        setdLq((calculProbabiliteJ(0)*(Math.pow((dRho*iNbServer), iNbServer)*dRho))/(Factorielle.Factoriel(iNbServer)*Math.pow((1-dRho),2)));
     }
     
     /**
