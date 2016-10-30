@@ -16,8 +16,6 @@
  */
 package Queueing;
 
-import java.util.Scanner;
-
 /**
  *
  * @author hux
@@ -33,78 +31,41 @@ public class OperationFileAttente {
             + "\n 4 - Mu : Nombre moyen de service rendu par unité de temps"
             + "\n 5 - Lambda : Nombre moyen d'arrivé de client par unité de temps";
 
-    public static String calcul(int iNbServer, int iNbClient, double dMu, double dLambda, String sTypeFile) {
-        
-        String retour = "=======================================================\n";
+    public static String calcul(int iNbServer, int iNbClient, double dMu, double dLambda, String sTypeFile, int iEtat) {
+
+        String retour = "=========================================\n";
 
         if (dMu != 0.0 || dLambda != 0.0 || iNbServer != 0 || iNbClient != 0) {
             //afin de récupérer les commandes de l'utilisateur
 //            Scanner sc;
 //            String input = "";
+            double proba = 0.0;
             switch (sTypeFile) {
                 case "MM1K":
                     FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer);
                     fileMM1K.init();
-                    System.out.println("File MM1K : \n " + fileMM1K.toString());
-                    retour +=  " File MM1K : \n " + fileMM1K.toString();
-//                    sc = new Scanner(System.in);
-//                    while (!"q".equals(input)) {
-//                        try {
-//                            System.out.println("\nVeuillez rentrer le chiffre de l'état pour lequel vous voulez calculer la probabilité :");
-//                            input = sc.nextLine();
-//                            Integer dJ = Integer.parseInt(input);//on récupère le chiffre
-//                            double proba = fileMM1K.calculProbabiliteJ(dJ);
-//                            System.out.println("\nLa probabilité de l'état " + dJ + " à l'équilibre est " + proba);
-//                        } catch (NumberFormatException e) {
-//                            System.out.println("Le chiffre rentré est incorrecte :" + input);
-//                        } catch (NullPointerException e) {
-//                            System.out.println("Le chiffre rentré est incorrecte :" + input);
-//                        }
-//                    }
+                    retour += " File MM1K : \n " + fileMM1K.toString();
+                    //calcul de la proba à l'état iEtat en régime stationnaire
+                    proba = fileMM1K.calculProbabiliteJ(iEtat);
+                    retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
                     break;
                 case "MM1":
                     //création de la file d'attente
                     FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, iNbServer);
                     //initialisation de l'objet
                     fileMM1.init();
-                    System.out.println("File MM1 : \n " + fileMM1.toString());
                     retour += "File MM1 : \n " + fileMM1.toString();
-//                    //gestion du calcul des probabilités à l'éuquilibre
-//                    sc = new Scanner(System.in);//récupération de l'input de l'utilisateur
-//                    while (!"q".equals(input)) {
-//                        try {
-//                            System.out.println("\nVeuillez rentrer le chiffre de l'état pour lequel vous voulez calculer la probabilité :");
-//                            input = sc.nextLine();
-//                            Integer dJ = Integer.parseInt(input);//on récupère le chiffre
-//                            double proba = fileMM1.calculProbabiliteJ(dJ);
-//                            System.out.println("\nLa probabilité de l'état " + dJ + " à l'équilibre est " + proba);
-//                        } catch (NumberFormatException e) {
-//                            System.out.println("Le chiffre rentré est incorrecte :" + input);
-//                        } catch (NullPointerException e) {
-//                            System.out.println("Le chiffre rentré est incorrecte :" + input);
-//                        }
-//                    }
+                    //calcul de la proba à l'état iEtat en régime stationnaire
+                    proba = fileMM1.calculProbabiliteJ(iEtat);
+                    retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
                     break;
                 case "MMS":
                     FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, iNbClient, iNbServer);
                     fileMMS.init();
-                    System.out.println("File MM1S : \n " + fileMMS.toString());
                     retour += "File MM1S : \n " + fileMMS.toString();
-                    
-//                    sc = new Scanner(System.in);
-//                    while (!"q".equals(input)) {
-//                        try {
-//                            System.out.println("\nVeuillez rentrer le chiffre de l'état pour lequel vous voulez calculer la probabilité :");
-//                            input = sc.nextLine();
-//                            Integer dJ = Integer.parseInt(input);//on récupère le chiffre
-//                            double proba = fileMMS.calculProbabiliteJ(dJ);
-//                            System.out.println("\nLa probabilité de l'état " + dJ + " à l'équilibre est " + proba);
-//                        } catch (NumberFormatException e) {
-//                            System.out.println("Le chiffre rentré est incorrecte :" + input);
-//                        } catch (NullPointerException e) {
-//                            System.out.println("Le chiffre rentré est incorrecte :" + input);
-//                        }
-//                    }
+                    //calcul de la proba à l'état iEtat en régime stationnaire
+                    proba = fileMMS.calculProbabiliteJ(iEtat);
+                    retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
                     break;
                 default:
                     System.out.println(ERREUR_TYPE_FILE_ATTENTE);
