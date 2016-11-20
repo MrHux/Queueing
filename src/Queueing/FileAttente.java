@@ -5,53 +5,56 @@
  */
 package Queueing;
 
+import MathsFunctions.Factorielle;
+
 /**
  *
  * @author hux
  */
 public abstract class FileAttente {
-    
-    
+
     /**
-     * 
+     *
      */
     protected double dLambda;
     /**
-     * 
+     *
      */
     protected double dMu;
     /**
-     * 
+     *
      */
     protected int iNbServer;
     /**
-     * 
+     *
      */
     protected int iNbClient;
     /**
-     * 
+     *
      */
     protected double dRho;
     /**
-     * 
+     *
      */
     protected double dL;
     /**
-     * 
+     *
      */
     protected double dLq;
     /**
-     * 
+     *
      */
     protected double dW;
     /**
-     * 
+     *
      */
     protected double dWq;
-    
-    
+    /**
+     *
+     */
+    protected double dT;
 
-     /**
+    /**
      *
      */
     public FileAttente() {
@@ -59,27 +62,29 @@ public abstract class FileAttente {
         dMu = 0.0;
         iNbClient = 0;
         iNbServer = 0;
+        dT = 0;
     }
-    
+
     /**
      *
      * @param dLambda
      * @param dMu
      * @param iNbClient
      * @param iNbServer
+     * @param dT
      */
-    public FileAttente(double dLambda , double dMu, int iNbClient, int iNbServer){
+    public FileAttente(double dLambda, double dMu, int iNbClient, int iNbServer, double dT) {
         this.dLambda = dLambda;
         this.dMu = dMu;
         this.iNbClient = iNbClient;
         this.iNbServer = iNbServer;
+        this.dT = dT;
     }
-    
-    
+
     /**
      *
      */
-    public void init(){
+    public void init() {
     }
 
     /**
@@ -209,23 +214,22 @@ public abstract class FileAttente {
     public double getdRho() {
         return dRho;
     }
-    
-    
+
     /**
      *
      * @return
      */
-    public void calculdRho(){
-        
-        setdRho(dLambda/dMu);
+    public void calculdRho() {
+
+        setdRho(dLambda / dMu);
     }
-    
+
     /**
      *
      * @param dJ
      * @return
      */
-    public double calculProbabiliteJ(int dJ){
+    public double calculProbabiliteJ(int dJ) {
         return 0;
     }
 
@@ -260,7 +264,7 @@ public abstract class FileAttente {
     public double getdWq() {
         return dWq;
     }
-    
+
     /**
      *
      * @return
@@ -287,7 +291,7 @@ public abstract class FileAttente {
      *
      */
     public void calculDureeMoyenneAttenteDansLeSys() {
-        setdW(dWq + (1/dMu));
+        setdW(dWq + (1 / dMu));
     }
 
     /**
@@ -297,27 +301,30 @@ public abstract class FileAttente {
         setdWq(dLq / dLambda);
     }
 
-    @Override
-    public String toString() {
-        return   " NbClient : "+iNbClient
-                +"\t"
-                +"  NbServeur : "+iNbServer
-                +"\n"
-                +"  Lambda : "+dLambda
-                +"\t"
-                +"  Mu : "+dMu
-                +"\n"
-                +"  Rho : "+dRho
-                +"\n"
-                +"  L : "+dL
-                +"\t\t"
-                +"  Lq : "+dLq
-                +"\n"
-                +"  W : "+dW
-                +"\t\t"
-                +"  Wq : "+dWq;
+    public double calculProbabiliteTemps(int iEtat) {
+
+        return Math.exp(dT * dLambda * (-1) * (Math.pow((dT * dLambda), iEtat) / (Factorielle.Factoriel(iEtat))));
     }
 
-    
-    
+    @Override
+    public String toString() {
+        return " NbClient : " + iNbClient
+                + "\t"
+                + "  NbServeur : " + iNbServer
+                + "\n"
+                + "  Lambda : " + dLambda
+                + "\t"
+                + "  Mu : " + dMu
+                + "\n"
+                + "  Rho : " + dRho
+                + "\n"
+                + "  L : " + dL
+                + "\t\t"
+                + "  Lq : " + dLq
+                + "\n"
+                + "  W : " + dW
+                + "\t\t"
+                + "  Wq : " + dWq;
+    }
+
 }

@@ -5,33 +5,31 @@
  */
 package Queueing;
 
-import static java.time.Clock.system;
-
 /**
  *
  * @author hux
  */
 public class FileAttenteMM1 extends FileAttente {
 
-
-        /**
-     * 
+    /**
+     *
      */
     public FileAttenteMM1() {
         super();
     }
-    
+
     /**
-     * 
+     *
      * @param dLambda
      * @param dMu
      * @param iNbClient
-     * @param iNbServer 
+     * @param iNbServer
+     * @param dT
      */
-    public FileAttenteMM1(double dLambda , double dMu, int iNbClient, int iNbServer){
-        super(dLambda, dMu, iNbClient, iNbServer);
+    public FileAttenteMM1(double dLambda, double dMu, int iNbClient, int iNbServer, double dT) {
+        super(dLambda, dMu, iNbClient, iNbServer, dT);
     }
-    
+
     @Override
     public void init() {
         calculdRho();

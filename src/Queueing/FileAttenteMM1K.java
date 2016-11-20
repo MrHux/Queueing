@@ -9,30 +9,28 @@ package Queueing;
  *
  * @author hux
  */
-public class FileAttenteMM1K extends FileAttente{
+public class FileAttenteMM1K extends FileAttente {
 
     /**
-     * 
+     *
      */
     public FileAttenteMM1K() {
         super();
     }
-    
+
     /**
-     * 
+     *
      * @param dLambda
      * @param dMu
      * @param iNbClient
-     * @param iNbServer 
+     * @param iNbServer
      */
-    public FileAttenteMM1K(double dLambda , double dMu, int iNbClient, int iNbServer){
-        super(dLambda, dMu, iNbClient, iNbServer);
+    public FileAttenteMM1K(double dLambda, double dMu, int iNbClient, int iNbServer, double dT) {
+        super(dLambda, dMu, iNbClient, iNbServer, dT);
     }
-    
-    
 
     @Override
-    public void init(){
+    public void init() {
         calculdRho();
         if (conditions()) {
             //attention à l'ordre des calcules il est important
@@ -49,31 +47,28 @@ public class FileAttenteMM1K extends FileAttente{
     public boolean conditions() {
         return true; //il n'y a pas de condition pour cette file
     }
-    
-    
 
     @Override
     public double calculProbabiliteJ(int dJ) {
-        if(dRho == 1){
-            return 1/(1+ (double)iNbClient);
+        if (dRho == 1) {
+            return 1 / (1 + (double) iNbClient);
         } else {
-            return (((1-dRho)*Math.pow(dRho, dJ))/(1-Math.pow(dRho, iNbClient+1)));
+            return (((1 - dRho) * Math.pow(dRho, dJ)) / (1 - Math.pow(dRho, iNbClient + 1)));
         }
     }
 
     @Override
     public void calculNombreMoyenClientDansLaFile() {
-        setdLq(dL-(1-calculProbabiliteJ(0)));
+        setdLq(dL - (1 - calculProbabiliteJ(0)));
     }
 
     @Override
     public void calculNombreMoyenClientDansLeSys() {
-        if(dRho == 1){
-            setdL(iNbClient/2);
+        if (dRho == 1) {
+            setdL(iNbClient / 2);
         } else {
-            setdL((dRho*(1-(iNbClient+1)*Math.pow(dRho, iNbClient) + iNbClient*Math.pow(dRho, iNbClient+1)))/((1-dRho)*(1-Math.pow(dRho, iNbClient+1))));
+            setdL((dRho * (1 - (iNbClient + 1) * Math.pow(dRho, iNbClient) + iNbClient * Math.pow(dRho, iNbClient + 1))) / ((1 - dRho) * (1 - Math.pow(dRho, iNbClient + 1))));
         }
     }
 
-    
 }

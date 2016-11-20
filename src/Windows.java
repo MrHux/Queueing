@@ -1,5 +1,8 @@
 
 import Queueing.OperationFileAttente;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.*;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -30,6 +33,12 @@ public class Windows extends javax.swing.JFrame {
      */
     public Windows() {
         initComponents();
+        //le premier type de liste est MM1 par défaut
+        //donc on masque les champs non nécéssaire
+        jLabelNbClient.setVisible(false);
+        jLabelNbServeur.setVisible(false);
+        varNbClient.setVisible(false);
+        varNbServer.setVisible(false);
     }
 
     /**
@@ -41,29 +50,31 @@ public class Windows extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabelTypeFile = new javax.swing.JLabel();
         varTypeFile = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         content = new javax.swing.JTextPane();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        jLabelResult = new javax.swing.JLabel();
+        jLabelLambda = new javax.swing.JLabel();
+        jLabelMu = new javax.swing.JLabel();
+        jLabelNbClient = new javax.swing.JLabel();
+        jLabelNbServeur = new javax.swing.JLabel();
         varNbServer = new javax.swing.JTextField();
         varNbClient = new javax.swing.JTextField();
         varMu = new javax.swing.JTextField();
         varLambda = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         varEtat = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
+        jLabelEtat = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        varTemps = new javax.swing.JTextField();
+        jLabelInstant = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hux : Calculateur de probabilités sur les files d'attentes : v1.0");
         setMinimumSize(new java.awt.Dimension(708, 450));
 
-        jLabel1.setText("Choix du type de file d'attente :");
+        jLabelTypeFile.setText("Choix du type de file d'attente :");
 
         varTypeFile.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MM1", "MM1K", "MMS" }));
         varTypeFile.setToolTipText("");
@@ -72,19 +83,24 @@ public class Windows extends javax.swing.JFrame {
                 varTypeFileItemStateChanged(evt);
             }
         });
+        varTypeFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                select(evt);
+            }
+        });
 
         content.setEditable(false);
         jScrollPane1.setViewportView(content);
 
-        jLabel2.setText("Résultat :");
+        jLabelResult.setText("Résultat :");
 
-        jLabel3.setText("Lambda :");
+        jLabelLambda.setText("Lambda :");
 
-        jLabel4.setText("Mu :");
+        jLabelMu.setText("Mu :");
 
-        jLabel5.setText("Nombre de client max :");
+        jLabelNbClient.setText("Nombre de client max :");
 
-        jLabel6.setText("Nombre de serveur max :");
+        jLabelNbServeur.setText("Nombre de serveur max :");
 
         varNbServer.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
@@ -141,8 +157,8 @@ public class Windows extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("<html>Etat pour le calcule de probabilité <br> en régime stationnaire :<html>");
-        jLabel7.setToolTipText("");
+        jLabelEtat.setText("<html>Etat pour le calcule de probabilité <br> en régime stationnaire :<html>");
+        jLabelEtat.setToolTipText("");
 
         jButton2.setText("Réinitialiser");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +166,8 @@ public class Windows extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        jLabelInstant.setText("Instant t, pour le calcul de proba P(T>t)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,32 +177,34 @@ public class Windows extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(jLabelTypeFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(varTypeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 367, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabelNbClient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabelNbServeur, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(varNbServer, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(varNbClient, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
+                                            .addComponent(jLabelLambda)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(varLambda))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
+                                            .addComponent(jLabelMu)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(varMu, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabelEtat, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel2))
-                                .addComponent(varEtat, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabelResult))
+                                .addComponent(varEtat)
+                                .addComponent(varTemps))
+                            .addComponent(jLabelInstant))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
@@ -194,35 +214,39 @@ public class Windows extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTypeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(varTypeFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jLabel2)
+                        .addComponent(jLabelResult)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(varLambda, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabelLambda))
                         .addGap(3, 3, 3)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
+                            .addComponent(jLabelMu)
                             .addComponent(varMu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(jLabelNbClient)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(varNbClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
+                        .addComponent(jLabelNbServeur)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(varNbServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelEtat, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(varEtat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelInstant)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(varTemps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(jButton2))))
@@ -245,17 +269,58 @@ public class Windows extends javax.swing.JFrame {
         sTypeFile = (String) varTypeFile.getSelectedItem();
         try {
             dLambda = Double.parseDouble(varLambda.getText());
-            dMu = Double.parseDouble(varMu.getText());
-            iNbServer = Integer.parseInt(varNbServer.getText());
-            iNbClient = Integer.parseInt(varNbClient.getText());
-            iEtat = Integer.parseInt(varEtat.getText());
-
         } catch (NumberFormatException e) {
-            content.setText("Attention certain paramètre sont incorectes !");
+            try {
+                ScriptEngineManager mgr = new ScriptEngineManager();
+                ScriptEngine engine = mgr.getEngineByName("JavaScript");
+                System.out.println(engine.eval(varLambda.getText()));
+                dLambda = (double) engine.eval(varLambda.getText());
+            } catch (ScriptException ex) {
+                Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, "Erreur script", ex);
+                content.setText("Attention le paramètre Lambda est incorecte !");
+            }
         }
-        if (sTypeFile != null && !"".equals(sTypeFile) && iNbServer != 0 && iNbClient != 0 && dLambda != 0.0 && dMu != 0.0) {
+        try {
+            dMu = Double.parseDouble(varMu.getText());
+        } catch (NumberFormatException e) {
+            content.setText("Attention le paramètre Mu est incorecte !");
+        }
+        try {
+            iNbServer = Integer.parseInt(varNbServer.getText());
+        } catch (NumberFormatException e) {
+            if (!"MM1".equals(sTypeFile) && !"MM1K".equals(sTypeFile)) {
+                content.setText("Attention le paramètre nombre de serveur est incorecte !");
+            }
+        }
+        try {
+            if (!"MM1".equals(sTypeFile)) {
+                iNbClient = Integer.parseInt(varNbClient.getText());
+            }
+        } catch (NumberFormatException e) {
+            content.setText("Attention le paramètre nombre de client est incorecte !");
+        }
+        try {
+            iEtat = Integer.parseInt(varEtat.getText());
+        } catch (NumberFormatException e) {
+            content.setText("Attention le paramètre Etat est incorecte !");
+        }
+        try {
+            dT = Double.parseDouble(varTemps.getText());
+        } catch (NumberFormatException e) {
+            try {
+                ScriptEngineManager mgr = new ScriptEngineManager();
+                ScriptEngine engine = mgr.getEngineByName("JavaScript");
+                System.out.println(engine.eval(varTemps.getText()));
+                dT = (double) engine.eval(varTemps.getText());
+            } catch (ScriptException ex) {
+                Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, "Erreur script", ex);
+                content.setText("Attention le paramètre Instant \'t\' est incorecte !");
+            }
+        }
+
+        if (sTypeFile != null && !"".equals(sTypeFile) && dLambda != 0.0 && dMu != 0.0 && ((iNbServer != 0 && iNbClient != 0 && "MMS".equals(sTypeFile)) || (iNbClient != 0 && "MM1K".equals(sTypeFile)) || "MM1".equals(sTypeFile))) {
             sAffichage = content.getText();
-            sAffichage += "\n" + OperationFileAttente.calcul(iNbServer, iNbClient, dMu, dLambda, sTypeFile, iEtat);
+            sAffichage += "\n" + OperationFileAttente.calcul(iNbServer, iNbClient, dMu, dLambda, sTypeFile, iEtat, dT);
 
             content.setText(sAffichage);
         } else {
@@ -318,6 +383,26 @@ public class Windows extends javax.swing.JFrame {
         varNbServer.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void select(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select
+        if (((String) varTypeFile.getSelectedItem()).equals("MM1")) {
+            jLabelNbClient.setVisible(false);
+            jLabelNbServeur.setVisible(false);
+            varNbClient.setVisible(false);
+            varNbServer.setVisible(false);
+        } else if (((String) varTypeFile.getSelectedItem()).equals("MM1K")) {
+            jLabelNbClient.setVisible(true);
+            jLabelNbServeur.setVisible(false);
+            varNbClient.setVisible(true);
+            varNbServer.setVisible(false);
+        } else if (((String) varTypeFile.getSelectedItem()).equals("MMS")) {
+            jLabelNbClient.setVisible(true);
+            jLabelNbServeur.setVisible(true);
+            varNbClient.setVisible(true);
+            varNbServer.setVisible(true);
+        }
+
+    }//GEN-LAST:event_select
+
     /**
      * @param args the command line arguments
      */
@@ -365,19 +450,21 @@ public class Windows extends javax.swing.JFrame {
     private javax.swing.JTextPane content;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelEtat;
+    private javax.swing.JLabel jLabelInstant;
+    private javax.swing.JLabel jLabelLambda;
+    private javax.swing.JLabel jLabelMu;
+    private javax.swing.JLabel jLabelNbClient;
+    private javax.swing.JLabel jLabelNbServeur;
+    private javax.swing.JLabel jLabelResult;
+    private javax.swing.JLabel jLabelTypeFile;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField varEtat;
     private javax.swing.JTextField varLambda;
     private javax.swing.JTextField varMu;
     private javax.swing.JTextField varNbClient;
     private javax.swing.JTextField varNbServer;
+    private javax.swing.JTextField varTemps;
     private javax.swing.JComboBox<String> varTypeFile;
     // End of variables declaration//GEN-END:variables
     double dMu = 0.0;
@@ -385,5 +472,6 @@ public class Windows extends javax.swing.JFrame {
     int iNbServer = 0;
     int iNbClient = 0;
     int iEtat = 0;
+    double dT = 0.0;
     String sTypeFile = "";
 }

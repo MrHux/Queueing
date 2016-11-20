@@ -31,7 +31,7 @@ public class OperationFileAttente {
             + "\n 4 - Mu : Nombre moyen de service rendu par unité de temps"
             + "\n 5 - Lambda : Nombre moyen d'arrivé de client par unité de temps";
 
-    public static String calcul(int iNbServer, int iNbClient, double dMu, double dLambda, String sTypeFile, int iEtat) {
+    public static String calcul(int iNbServer, int iNbClient, double dMu, double dLambda, String sTypeFile, int iEtat, double dT) {
 
         String retour = "=========================================\n";
 
@@ -42,30 +42,36 @@ public class OperationFileAttente {
             double proba = 0.0;
             switch (sTypeFile) {
                 case "MM1K":
-                    FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer);
+                    FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer, dT);
                     fileMM1K.init();
                     retour += " File MM1K : \n " + fileMM1K.toString();
                     //calcul de la proba à l'état iEtat en régime stationnaire
                     proba = fileMM1K.calculProbabiliteJ(iEtat);
                     retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
+                    proba = fileMM1K.calculProbabiliteTemps(iEtat);
+                    retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
                     break;
                 case "MM1":
                     //création de la file d'attente
-                    FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, iNbServer);
+                    FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, iNbServer, dT);
                     //initialisation de l'objet
                     fileMM1.init();
                     retour += "File MM1 : \n " + fileMM1.toString();
                     //calcul de la proba à l'état iEtat en régime stationnaire
                     proba = fileMM1.calculProbabiliteJ(iEtat);
                     retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
+                    proba = fileMM1.calculProbabiliteTemps(iEtat);
+                    retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
                     break;
                 case "MMS":
-                    FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, iNbClient, iNbServer);
+                    FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, iNbClient, iNbServer, dT);
                     fileMMS.init();
                     retour += "File MM1S : \n " + fileMMS.toString();
                     //calcul de la proba à l'état iEtat en régime stationnaire
                     proba = fileMMS.calculProbabiliteJ(iEtat);
                     retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
+                    proba = fileMMS.calculProbabiliteTemps(iEtat);
+                    retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
                     break;
                 default:
                     System.out.println(ERREUR_TYPE_FILE_ATTENTE);

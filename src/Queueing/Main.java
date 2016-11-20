@@ -64,7 +64,7 @@ public class Main {
             String input = "";
             switch (args[0]) {
                 case "MM1K":
-                    FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer);
+                    FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer, 0);
                     fileMM1K.init();
                     System.out.println("File MM1K : \n " + fileMM1K.toString());
                     sc = new Scanner(System.in);
@@ -84,7 +84,7 @@ public class Main {
                     break;
                 case "MM1":
                     //création de la file d'attente
-                    FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, iNbServer);
+                    FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, iNbServer, 0);
                     //initialisation de l'objet
                     fileMM1.init();
                     System.out.println("File MM1 : \n " + fileMM1.toString());
@@ -106,7 +106,7 @@ public class Main {
                     }
                     break;
                 case "MMS":
-                    FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, iNbClient, iNbServer);
+                    FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, iNbClient, iNbServer, 0);
                     fileMMS.init();
                     System.out.println("File MM1S : \n " + fileMMS.toString());
                     sc = new Scanner(System.in);
