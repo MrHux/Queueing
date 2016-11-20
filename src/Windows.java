@@ -3,8 +3,6 @@ import Queueing.OperationFileAttente;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.script.*;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
 
 /*
  * Copyright (C) 2016 hux
@@ -71,18 +69,14 @@ public class Windows extends javax.swing.JFrame {
         jLabelInstant = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Hux : Calculateur de probabilités sur les files d'attentes : v1.0");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("Queueing/Windows"); // NOI18N
+        setTitle(bundle.getString("TITLE")); // NOI18N
         setMinimumSize(new java.awt.Dimension(708, 450));
 
-        jLabelTypeFile.setText("Choix du type de file d'attente :");
+        jLabelTypeFile.setText(bundle.getString("LABEL_CHOICE")); // NOI18N
 
         varTypeFile.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MM1", "MM1K", "MMS" }));
         varTypeFile.setToolTipText("");
-        varTypeFile.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                varTypeFileItemStateChanged(evt);
-            }
-        });
         varTypeFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 select(evt);
@@ -92,82 +86,34 @@ public class Windows extends javax.swing.JFrame {
         content.setEditable(false);
         jScrollPane1.setViewportView(content);
 
-        jLabelResult.setText("Résultat :");
+        jLabelResult.setText(bundle.getString("LABEL_RESULT")); // NOI18N
 
-        jLabelLambda.setText("Lambda :");
+        jLabelLambda.setText(bundle.getString("LABEL_LAMBDA")); // NOI18N
 
-        jLabelMu.setText("Mu :");
+        jLabelMu.setText(bundle.getString("LABEL_MU")); // NOI18N
 
-        jLabelNbClient.setText("Nombre de client max :");
+        jLabelNbClient.setText(bundle.getString("LABEL_NB_CUSTOMER")); // NOI18N
 
-        jLabelNbServeur.setText("Nombre de serveur max :");
+        jLabelNbServeur.setText(bundle.getString("LABEL_NB_SERVER")); // NOI18N
 
-        varNbServer.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                varNbServerInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        varNbServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                varNbServerActionPerformed(evt);
-            }
-        });
-
-        varNbClient.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                varNbClientInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-
-        varMu.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                varMuInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        varMu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                varMuActionPerformed(evt);
-            }
-        });
-
-        varLambda.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                varLambdaInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-
-        jButton1.setText("Soumettre");
+        jButton1.setText(bundle.getString("SOUMETTRE")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        varEtat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                varEtatActionPerformed(evt);
-            }
-        });
-
-        jLabelEtat.setText("<html>Etat pour le calcule de probabilité <br> en régime stationnaire :<html>");
+        jLabelEtat.setText(bundle.getString("LABEL_STATE")); // NOI18N
         jLabelEtat.setToolTipText("");
 
-        jButton2.setText("Réinitialiser");
+        jButton2.setText(bundle.getString("REINITIALIZE_BUTTON")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jLabelInstant.setText("Instant t, pour le calcul de proba P(T>t)");
+        jLabelInstant.setText(bundle.getString("LABEL_INSTANT")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -256,14 +202,6 @@ public class Windows extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void varNbServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varNbServerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_varNbServerActionPerformed
-
-    private void varMuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varMuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_varMuActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String sAffichage = "";
         sTypeFile = (String) varTypeFile.getSelectedItem();
@@ -272,108 +210,62 @@ public class Windows extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             try {
                 ScriptEngineManager mgr = new ScriptEngineManager();
-                ScriptEngine engine = mgr.getEngineByName("JavaScript");
+                ScriptEngine engine = mgr.getEngineByName(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("JAVASCRIPT"));
                 System.out.println(engine.eval(varLambda.getText()));
                 dLambda = (double) engine.eval(varLambda.getText());
             } catch (ScriptException ex) {
-                Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, "Erreur script", ex);
-                content.setText("Attention le paramètre Lambda est incorecte !");
+                Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_SCRIPT"), ex);
+                content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_LAMBDA_PARAMETER"));
             }
         }
         try {
             dMu = Double.parseDouble(varMu.getText());
         } catch (NumberFormatException e) {
-            content.setText("Attention le paramètre Mu est incorecte !");
+            content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_MU_PARAMETER"));
         }
         try {
             iNbServer = Integer.parseInt(varNbServer.getText());
         } catch (NumberFormatException e) {
-            if (!"MM1".equals(sTypeFile) && !"MM1K".equals(sTypeFile)) {
-                content.setText("Attention le paramètre nombre de serveur est incorecte !");
+            if (!java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1").equals(sTypeFile) && !java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1K").equals(sTypeFile)) {
+                content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_SERVER_PARAMTER"));
             }
         }
         try {
-            if (!"MM1".equals(sTypeFile)) {
+            if (!java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1").equals(sTypeFile)) {
                 iNbClient = Integer.parseInt(varNbClient.getText());
             }
         } catch (NumberFormatException e) {
-            content.setText("Attention le paramètre nombre de client est incorecte !");
+            content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_CUSTOMER_PARAMTER"));
         }
         try {
             iEtat = Integer.parseInt(varEtat.getText());
         } catch (NumberFormatException e) {
-            content.setText("Attention le paramètre Etat est incorecte !");
+            content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_BAD_STATE_PARAMETER"));
         }
         try {
             dT = Double.parseDouble(varTemps.getText());
         } catch (NumberFormatException e) {
             try {
                 ScriptEngineManager mgr = new ScriptEngineManager();
-                ScriptEngine engine = mgr.getEngineByName("JavaScript");
+                ScriptEngine engine = mgr.getEngineByName(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("JAVASCRIPT"));
                 System.out.println(engine.eval(varTemps.getText()));
                 dT = (double) engine.eval(varTemps.getText());
             } catch (ScriptException ex) {
-                Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, "Erreur script", ex);
-                content.setText("Attention le paramètre Instant \'t\' est incorecte !");
+                Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR SCRIPT"), ex);
+                content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_BAD_t_PARAMETER"));
             }
         }
 
-        if (sTypeFile != null && !"".equals(sTypeFile) && dLambda != 0.0 && dMu != 0.0 && ((iNbServer != 0 && iNbClient != 0 && "MMS".equals(sTypeFile)) || (iNbClient != 0 && "MM1K".equals(sTypeFile)) || "MM1".equals(sTypeFile))) {
+        if (sTypeFile != null && !"".equals(sTypeFile) && dLambda != 0.0 && dMu != 0.0 && ((iNbServer != 0 && iNbClient != 0 && java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MMS").equals(sTypeFile)) || (iNbClient != 0 && java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1K").equals(sTypeFile)) || java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1").equals(sTypeFile))) {
             sAffichage = content.getText();
             sAffichage += "\n" + OperationFileAttente.calcul(iNbServer, iNbClient, dMu, dLambda, sTypeFile, iEtat, dT);
-
             content.setText(sAffichage);
         } else {
-            content.setText("Attention tout les paramètres ne sont pas renseigné !");
+
+            content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("WARNING_PARAMETER_NOTSET"));
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void varTypeFileItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_varTypeFileItemStateChanged
-        JComboBox cb = (JComboBox) evt.getSource();
-        sTypeFile = (String) cb.getSelectedItem();
-    }//GEN-LAST:event_varTypeFileItemStateChanged
-
-    private void varLambdaInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_varLambdaInputMethodTextChanged
-        JTextField jt = (JTextField) evt.getSource();
-        try {
-            dLambda = Double.parseDouble(jt.getText());
-        } catch (NumberFormatException e) {
-
-        }
-    }//GEN-LAST:event_varLambdaInputMethodTextChanged
-
-    private void varMuInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_varMuInputMethodTextChanged
-        JTextField jt = (JTextField) evt.getSource();
-        try {
-            dMu = Double.parseDouble(jt.getText());
-
-        } catch (NumberFormatException e) {
-
-        }
-    }//GEN-LAST:event_varMuInputMethodTextChanged
-
-    private void varNbClientInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_varNbClientInputMethodTextChanged
-        JTextField jt = (JTextField) evt.getSource();
-        try {
-            iNbClient = Integer.parseInt(jt.getText());
-        } catch (NumberFormatException e) {
-
-        }
-    }//GEN-LAST:event_varNbClientInputMethodTextChanged
-
-    private void varNbServerInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_varNbServerInputMethodTextChanged
-        JTextField jt = (JTextField) evt.getSource();
-        try {
-            iNbServer = Integer.parseInt(jt.getText());
-        } catch (NumberFormatException e) {
-
-        }
-    }//GEN-LAST:event_varNbServerInputMethodTextChanged
-
-    private void varEtatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varEtatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_varEtatActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         varEtat.setText("");
@@ -384,17 +276,17 @@ public class Windows extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void select(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select
-        if (((String) varTypeFile.getSelectedItem()).equals("MM1")) {
+        if (((String) varTypeFile.getSelectedItem()).equals(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1"))) {
             jLabelNbClient.setVisible(false);
             jLabelNbServeur.setVisible(false);
             varNbClient.setVisible(false);
             varNbServer.setVisible(false);
-        } else if (((String) varTypeFile.getSelectedItem()).equals("MM1K")) {
+        } else if (((String) varTypeFile.getSelectedItem()).equals(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1K"))) {
             jLabelNbClient.setVisible(true);
             jLabelNbServeur.setVisible(false);
             varNbClient.setVisible(true);
             varNbServer.setVisible(false);
-        } else if (((String) varTypeFile.getSelectedItem()).equals("MMS")) {
+        } else if (((String) varTypeFile.getSelectedItem()).equals(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MMS"))) {
             jLabelNbClient.setVisible(true);
             jLabelNbServeur.setVisible(true);
             varNbClient.setVisible(true);
@@ -414,7 +306,7 @@ public class Windows extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if (java.util.ResourceBundle.getBundle("Queueing/Windows").getString("DESIGN").equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
