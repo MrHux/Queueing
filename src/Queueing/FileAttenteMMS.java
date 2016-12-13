@@ -96,4 +96,21 @@ public class FileAttenteMMS extends FileAttente {
         }
     }
 
+    @Override
+    public double calculProbabiliteTemps(int iEtat) {
+
+        double dFirstNumerator = calculProbabiliteJ(iEtat) * Math.pow(Math.exp(iNbServer), iNbServer);
+        double dFirstDenominator = Factorielle.Factoriel(iNbServer) * (1 - dRho);
+
+        double dSecondNumerator = 1 - Math.exp(-dMu * dT * (iNbServer - 1 - Math.pow(dRho, iNbServer)));
+        double dSecondDenominator = iNbServer - 1 - Math.pow(dRho, iNbServer);
+
+        double dFirstMember = Math.exp(-dMu * dT);
+
+        double dSecondMember = 1 + (dFirstNumerator / dFirstDenominator) * (dSecondNumerator / dSecondDenominator);
+
+        return dFirstMember * dSecondMember;
+
+    }
+
 }

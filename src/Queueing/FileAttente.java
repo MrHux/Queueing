@@ -304,6 +304,7 @@ public abstract class FileAttente {
     public double calculProbabiliteTemps(int iEtat) {
 
         return Math.exp(dT * dLambda * (-1) * (Math.pow((dT * dLambda), iEtat) / (Factorielle.Factoriel(iEtat))));
+
     }
 
     @Override
