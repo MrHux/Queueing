@@ -22,7 +22,8 @@ package Queueing;
  */
 public class OperationFileAttente {
 
-    private static final String ERREUR_TYPE_FILE_ATTENTE = "Erreur Aucun type de file d'attente valable n'a été choisie";
+    private static final String ERREUR_TYPE_FILE_ATTENTE = java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR AUCUN TYPE DE FILE D'ATTENTE VALABLE N'A ÉTÉ CHOISIE");
+    private static final String ERREUR_RHO = java.util.ResourceBundle.getBundle("Queueing/Windows").getString("IL FAUT RHO < 1");
     private static final String CONSOLE = "Attention un des paramètres rentré n'est pas compatible. "
             + "\n Rappel : "
             + "\n 1 - type de file d'attente avec la notation de kendall"
@@ -35,53 +36,58 @@ public class OperationFileAttente {
 
         String retour = "=========================================\n";
 
-        if (dMu != 0.0 || dLambda != 0.0 || iNbServer != 0 || iNbClient != 0) {
+        if (dMu != 0.0 || dLambda != 0.0 || (iNbServer != 0 && sTypeFile.equals("MMS")) || iNbClient != 0 || (iNbServer != 0 && (sTypeFile.equals("MM1K")))) {
             //afin de récupérer les commandes de l'utilisateur
 //            Scanner sc;
 //            String input = "";
             double proba = 0.0;
-            switch (sTypeFile) {
-                case "MM1K":
-                    FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer, dT);
-                    fileMM1K.init();
-                    retour += " File MM1K : \n " + fileMM1K.toString();
-                    //calcul de la proba à l'état iEtat en régime stationnaire
-                    proba = fileMM1K.calculProbabiliteJ(iEtat);
-                    retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
-                    proba = fileMM1K.calculProbabiliteTemps(iEtat);
-                    retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
-                    break;
-                case "MM1":
-                    //création de la file d'attente
-                    FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, iNbServer, dT);
-                    //initialisation de l'objet
-                    fileMM1.init();
-                    retour += "File MM1 : \n " + fileMM1.toString();
-                    //calcul de la proba à l'état iEtat en régime stationnaire
-                    proba = fileMM1.calculProbabiliteJ(iEtat);
-                    retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
-                    proba = fileMM1.calculProbabiliteTemps(iEtat);
-                    retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
-                    break;
-                case "MMS":
-                    FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, iNbClient, iNbServer, dT);
-                    fileMMS.init();
-                    retour += "File MM1S : \n " + fileMMS.toString();
-                    //calcul de la proba à l'état iEtat en régime stationnaire
-                    proba = fileMMS.calculProbabiliteJ(iEtat);
-                    retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
-                    proba = fileMMS.calculProbabiliteTemps(iEtat);
-                    retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
-                    break;
-                default:
-                    System.out.println(ERREUR_TYPE_FILE_ATTENTE);
-                    retour += ERREUR_TYPE_FILE_ATTENTE;
-                    break;
+            try {
+                switch (sTypeFile) {
+                    case "MM1K":
+                        FileAttenteMM1K fileMM1K = new FileAttenteMM1K(dLambda, dMu, iNbClient, iNbServer, dT);
+                        fileMM1K.init();
+                        retour += " File MM1K : \n " + fileMM1K.toString();
+                        //calcul de la proba à l'état iEtat en régime stationnaire
+                        proba = fileMM1K.calculProbabiliteJ(iEtat);
+                        retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
+                        proba = fileMM1K.calculProbabiliteTemps(iEtat);
+                        retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
+                        break;
+                    case "MM1":
+                        //création de la file d'attente
+                        FileAttenteMM1 fileMM1 = new FileAttenteMM1(dLambda, dMu, iNbClient, 1, dT);
+                        //initialisation de l'objet
+                        fileMM1.init();
+                        retour += "File MM1 : \n " + fileMM1.toString();
+                        //calcul de la proba à l'état iEtat en régime stationnaire
+                        proba = fileMM1.calculProbabiliteJ(iEtat);
+                        retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
+                        proba = fileMM1.calculProbabiliteTemps(iEtat);
+                        retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
+                        break;
+                    case "MMS":
+                        FileAttenteMMS fileMMS = new FileAttenteMMS(dLambda, dMu, 0, iNbServer, dT);
+                        fileMMS.init();
+                        retour += "File MM1S : \n " + fileMMS.toString();
+                        //calcul de la proba à l'état iEtat en régime stationnairetrue
+                        proba = fileMMS.calculProbabiliteJ(iEtat);
+                        retour += "\nLa probabilité de l'état " + iEtat + " à l'équilibre est " + proba;
+                        proba = fileMMS.calculProbabiliteTemps(iEtat);
+                        retour += "\nLa probabilité qu'à un temps supérieur à " + dT + " on soit dans l'état " + iEtat + " : " + proba;
+                        break;
+                    default:
+                        System.out.println(ERREUR_TYPE_FILE_ATTENTE);
+                        retour += ERREUR_TYPE_FILE_ATTENTE;
+                        break;
+                }
+            } catch (ArithmeticException e) {
+                System.out.println(ERREUR_RHO);
+                retour += ERREUR_RHO;
             }
 
         } else {
-            System.out.println("Attention un des paramètres parmi Mu, Lambda, le nombre de serveur et le nombre de client n'est pas renseigné !");
-            retour += "Attention un des paramètres parmi Mu, Lambda, le nombre de serveur et le nombre de client n'est pas renseigné !";
+            System.out.println(CONSOLE);
+            retour += CONSOLE;
         }
         return retour;
     }

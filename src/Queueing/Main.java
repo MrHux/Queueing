@@ -130,7 +130,7 @@ public class Main {
             }
 
         } else {
-            System.out.println("Attention un des paramètres parmi Mu, Lambda, le nombre de serveur et le nombre de client n'est pas renseigné !");
+            System.out.println(ERREUR_TYPE_FILE_ATTENTE);
         }
     }
 

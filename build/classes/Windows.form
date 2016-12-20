@@ -36,7 +36,7 @@
                       <Component id="jLabelTypeFile" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="varTypeFile" min="-2" pref="127" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="367" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -164,6 +164,7 @@
         <Component class="javax.swing.JTextPane" name="content">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="&#xa;Rappel :&#xa; 1 - type de file d&apos;attente avec la notation de kendall&quot;&#xa; 2 - Nb de serveur&#xa; 3 - Nb de Client Maximum dans le syst&#xe8;me&quot;&#xa; 4 - Mu : Nombre moyen de service rendu par unit&#xe9; de temps&quot;&#xa; 5 - Lambda : Nombre moyen d&apos;arriv&#xe9; de client par unit&#xe9; de temps&quot;"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -204,12 +205,24 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="varNbServer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="varNbClient">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="varMu">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="2"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="varLambda">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
@@ -222,6 +235,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="varEtat">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelEtat">
       <Properties>
@@ -242,6 +258,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="varTemps">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelInstant">
       <Properties>

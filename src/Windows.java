@@ -84,6 +84,7 @@ public class Windows extends javax.swing.JFrame {
         });
 
         content.setEditable(false);
+        content.setText("\nRappel :\n 1 - type de file d'attente avec la notation de kendall\"\n 2 - Nb de serveur\n 3 - Nb de Client Maximum dans le système\"\n 4 - Mu : Nombre moyen de service rendu par unité de temps\"\n 5 - Lambda : Nombre moyen d'arrivé de client par unité de temps\"");
         jScrollPane1.setViewportView(content);
 
         jLabelResult.setText(bundle.getString("LABEL_RESULT")); // NOI18N
@@ -96,12 +97,22 @@ public class Windows extends javax.swing.JFrame {
 
         jLabelNbServeur.setText(bundle.getString("LABEL_NB_SERVER")); // NOI18N
 
+        varNbServer.setText("1");
+
+        varNbClient.setText("1");
+
+        varMu.setText("2");
+
+        varLambda.setText("1");
+
         jButton1.setText(bundle.getString("SOUMETTRE")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        varEtat.setText("0");
 
         jLabelEtat.setText(bundle.getString("LABEL_STATE")); // NOI18N
         jLabelEtat.setToolTipText("");
@@ -112,6 +123,8 @@ public class Windows extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        varTemps.setText("0");
 
         jLabelInstant.setText(bundle.getString("LABEL_INSTANT")); // NOI18N
 
@@ -126,7 +139,7 @@ public class Windows extends javax.swing.JFrame {
                         .addComponent(jLabelTypeFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(varTypeFile, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 367, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -216,12 +229,19 @@ public class Windows extends javax.swing.JFrame {
             } catch (ScriptException ex) {
                 Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_SCRIPT"), ex);
                 content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_LAMBDA_PARAMETER"));
+            } catch (NullPointerException ex) {
+                content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_LAMBDA_PARAMETER"));
+                dLambda = 0.0;
             }
         }
         try {
             dMu = Double.parseDouble(varMu.getText());
         } catch (NumberFormatException e) {
+            Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_SCRIPT"), e);
             content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_MU_PARAMETER"));
+        } catch (NullPointerException ex) {
+            content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_MU_PARAMETER"));
+            dMu = 0.0;
         }
         try {
             iNbServer = Integer.parseInt(varNbServer.getText());
@@ -229,6 +249,13 @@ public class Windows extends javax.swing.JFrame {
             if (!java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1").equals(sTypeFile) && !java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1K").equals(sTypeFile)) {
                 content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_SERVER_PARAMTER"));
             }
+        } catch (NullPointerException e) {
+            if (!java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1").equals(sTypeFile) && !java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1K").equals(sTypeFile)) {
+                content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_SERVER_PARAMTER"));
+            } else {
+                Logger.getLogger(Windows.class.getName()).log(Level.INFO, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_SERVER_PARAMTER"), "");
+            }
+            iNbServer = 0;
         }
         try {
             if (!java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MM1").equals(sTypeFile)) {
@@ -236,11 +263,17 @@ public class Windows extends javax.swing.JFrame {
             }
         } catch (NumberFormatException e) {
             content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_CUSTOMER_PARAMTER"));
+        } catch (NullPointerException e) {
+            Logger.getLogger(Windows.class.getName()).log(Level.INFO, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_NB_SERVER_PARAMTER"), "");
+            iNbClient = 0;
         }
         try {
             iEtat = Integer.parseInt(varEtat.getText());
         } catch (NumberFormatException e) {
             content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_BAD_STATE_PARAMETER"));
+        } catch (NullPointerException e) {
+            content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_BAD_STATE_PARAMETER"));
+            iEtat = 0;
         }
         try {
             dT = Double.parseDouble(varTemps.getText());
@@ -253,6 +286,9 @@ public class Windows extends javax.swing.JFrame {
             } catch (ScriptException ex) {
                 Logger.getLogger(Windows.class.getName()).log(Level.SEVERE, java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR SCRIPT"), ex);
                 content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_BAD_t_PARAMETER"));
+            } catch (NullPointerException ex) {
+                content.setText(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("ERREUR_BAD_STATE_PARAMETER"));
+                dT = 0.0;
             }
         }
 
@@ -287,12 +323,11 @@ public class Windows extends javax.swing.JFrame {
             varNbClient.setVisible(true);
             varNbServer.setVisible(false);
         } else if (((String) varTypeFile.getSelectedItem()).equals(java.util.ResourceBundle.getBundle("Queueing/Windows").getString("LABEL_MMS"))) {
-            jLabelNbClient.setVisible(true);
+            jLabelNbClient.setVisible(false);
             jLabelNbServeur.setVisible(true);
-            varNbClient.setVisible(true);
+            varNbClient.setVisible(false);
             varNbServer.setVisible(true);
         }
-
     }//GEN-LAST:event_select
 
     /**

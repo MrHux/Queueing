@@ -219,9 +219,12 @@ public abstract class FileAttente {
      *
      * @return
      */
-    public void calculdRho() {
-
-        setdRho(dLambda / dMu);
+    public void calculdRho() throws ArithmeticException {
+        if (dLambda < dMu) {
+            setdRho(dLambda / dMu);
+        } else {
+            throw new ArithmeticException();
+        }
     }
 
     /**

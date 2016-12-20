@@ -31,7 +31,7 @@ public class FileAttenteMM1 extends FileAttente {
     }
 
     @Override
-    public void init() {
+    public void init() throws ArithmeticException {
         calculdRho();
         if (conditions()) {
             //attention à l'ordre des calcules il est important
