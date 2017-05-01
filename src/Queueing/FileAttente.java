@@ -220,7 +220,7 @@ public abstract class FileAttente {
      * @return
      */
     public void calculdRho() throws ArithmeticException {
-        if (dLambda < dMu) {
+        if (dLambda <= dMu) {
             setdRho(dLambda / dMu);
         } else {
             throw new ArithmeticException();
