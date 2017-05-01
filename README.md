@@ -14,7 +14,7 @@ In each of them you need to provide the following parameters :
 - Lamba : the number of customer coming per unity of time
 - Mu : the number service made per unity of time
 - The number of customer in the system at a specific state : to calculate the probability to have as much customer in the system in  stationary analysis
-- "t" : to calculate the probability to wait more than "t" in the system
+- "t" : to calculate the probability to wait more than "t" time in the system
 
 Some other parameters need to be provided in the case of :
 
